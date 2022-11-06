@@ -41,9 +41,20 @@ bool bst_search(bst_node_t *tree, char key, int *value) {
   {
     if(tree->key == key){
       *value = tree->value;
+      return true;
+    }
+    else{
+      if(tree == NULL){
+        return false;
+      }
+      if(tree->key > key){
+        tree = tree->left;
+      }
+      else{
+        tree = tree->right;
+      }
     }
   }
-  
   return false;
 }
 
@@ -75,6 +86,18 @@ void bst_insert(bst_node_t **tree, char key, int value) {
  * Funkciu implementujte iteratívne bez použitia vlastných pomocných funkcií.
  */
 void bst_replace_by_rightmost(bst_node_t *target, bst_node_t **tree) {
+  while((*tree)->right){
+    tree = &(*tree)->right;
+  }
+
+  bst_node_t *leftSubtree = NULL;
+  leftSubtree = (*tree)->left; //can be null,<
+  
+  target->value = (*tree)->value;
+  target->key = (*tree)->key;
+
+  free(*tree);
+  *tree = leftSubtree;
 }
 
 /*
@@ -90,6 +113,7 @@ void bst_replace_by_rightmost(bst_node_t *target, bst_node_t **tree) {
  * použitia vlastných pomocných funkcií.
  */
 void bst_delete(bst_node_t **tree, char key) {
+
 }
 
 /*
