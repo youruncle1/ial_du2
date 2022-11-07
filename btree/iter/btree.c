@@ -70,7 +70,60 @@ bool bst_search(bst_node_t *tree, char key, int *value) {
  * Funkciu implementujte iteratívne bez použitia vlastných pomocných funkcií.
  */
 void bst_insert(bst_node_t **tree, char key, int value) {
+
+bst_node_t *rootTrail = *tree;
+bst_node_t *where = NULL;
+bool found = false;
+
+while(rootTrail){
+
+  where = rootTrail;
+
+  if(rootTrail->key > key){
+      rootTrail = rootTrail->left;
+    } 
+    else{
+      if(rootTrail->key < key){
+        rootTrail = rootTrail->right; 
+      }
+      else{
+        found = true; 
+        break;
+      }
+    }
+  }
+  
+  if(!found){
+
+    bst_node_t *insertNode = malloc(sizeof(struct bst_node)); 
+
+    if (insertNode == NULL){
+      exit(-1);
+    }
+
+    insertNode->value = value;
+    insertNode->key = key;   
+    insertNode->left = NULL;
+    insertNode->right = NULL;
+    if(*tree == NULL){
+      (*tree) = insertNode;
+    }
+    else{
+      if(where->key > key){
+        where->left = insertNode; 
+      } 
+      else{
+        if(where->key < key){
+          where->right = insertNode;
+        }   
+      }
+    }
+  }
+  else{
+    where->value = value;
+  }
 }
+
 
 /*
  * Pomocná funkcia ktorá nahradí uzol najpravejším potomkom.
