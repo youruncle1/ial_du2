@@ -63,7 +63,7 @@ bool bst_search(bst_node_t *tree, char key, int *value) {
  */
 void bst_insert(bst_node_t **tree, char key, int value) {
   if (*tree == NULL){
-    *tree = malloc(sizeof(bst_node_t));
+    *tree = malloc(sizeof(bst_node_t)); //malloc(sizeof(struct bst_node));
     if(*tree == NULL){
       exit(-1);
     }

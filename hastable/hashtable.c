@@ -32,6 +32,9 @@ int get_hash(char *key) {
  * Inicializácia tabuľky — zavolá sa pred prvým použitím tabuľky.
  */
 void ht_init(ht_table_t *table) {
+  for(int i = 0; i < HT_SIZE; i++){
+    (*table)[i] = NULL;
+  } 
 }
 
 /*
@@ -41,6 +44,18 @@ void ht_init(ht_table_t *table) {
  * hodnotu NULL.
  */
 ht_item_t *ht_search(ht_table_t *table, char *key) {
+ 
+  ht_item_t *table_item;
+  int hash_index = get_hash(key);
+  table_item = (*table)[hash_index];
+
+  while(table_item){
+    if(table_item->key == key){
+      return table_item;
+    }
+    table_item = table_item->next;
+  }
+
   return NULL;
 }
 
@@ -53,6 +68,23 @@ ht_item_t *ht_search(ht_table_t *table, char *key) {
  * synonym zvoľte najefektívnejšiu možnosť a vložte prvok na začiatok zoznamu.
  */
 void ht_insert(ht_table_t *table, char *key, float value) {
+  ht_item_t *table_item;
+  table_item = ht_search(table, key);
+  if(table_item){
+    table_item->value = value;
+  }
+  else{
+    int hash_index = get_hash(key);
+    table_item = malloc(sizeof(struct ht_item));
+    if(!table_item){
+      exit(-1);
+    }
+    table_item->value = value;
+    table_item->key = key;
+    table_item->next = (*table)[hash_index];
+
+    (*table)[hash_index] = table_item;
+  }
 }
 
 /*
@@ -64,7 +96,12 @@ void ht_insert(ht_table_t *table, char *key, float value) {
  * Pri implementácii využite funkciu ht_search.
  */
 float *ht_get(ht_table_t *table, char *key) {
-  return NULL;
+  ht_item_t *table_item;
+  table_item = ht_search(table, key);
+  if (table_item == NULL){
+    return NULL;
+  }
+  return &table_item->value;
 }
 
 /*
