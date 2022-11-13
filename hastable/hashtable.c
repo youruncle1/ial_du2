@@ -117,7 +117,7 @@ float *ht_get(ht_table_t *table, char *key) {
   
   ht_item_t *table_item;
   table_item = ht_search(table, key);
-  if (table_item == NULL){
+  if (!table_item){
     return NULL;
   }
   return &table_item->value;
