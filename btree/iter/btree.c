@@ -165,9 +165,126 @@ void bst_replace_by_rightmost(bst_node_t *target, bst_node_t **tree) {
  * Funkciu implementujte iteratívne pomocou bst_replace_by_rightmost a bez
  * použitia vlastných pomocných funkcií.
  */
-void bst_delete(bst_node_t **tree, char key) {
 
+
+void bst_delete(bst_node_t **tree, char key) {
+  if(!(*tree)){
+    return;
+  }
+
+  bst_node_t *delete = *tree;
+  bst_node_t *pDelete = NULL;
+  while(delete){
+    if(delete->key == key){
+      
+      if(!(delete->left) && !(delete->right)){
+        if(!(pDelete)){
+          *tree = NULL;
+        }
+        else if(pDelete->left == delete){
+          pDelete->left = NULL;
+        }
+        else{
+          pDelete->right = NULL;
+        }
+        free(delete);
+        break;
+      }
+
+      if((delete->left) && !(delete->right)){
+        if(!(pDelete)){
+          *tree = delete->left;
+        }
+        else if(pDelete->left == delete){
+          pDelete->left = delete->left;
+        }
+        else{
+          pDelete->right = delete->left;
+        }
+        free(delete);
+        break;
+      }
+
+      if(!(delete->left) && (delete->right)){
+        if(!(pDelete)){
+          *tree = delete->right;
+        }
+        else if(pDelete->left == delete){
+          pDelete->left = delete->right;
+        }
+        else{
+          pDelete->right = delete->right;
+        }
+        free(delete);
+        break;
+      }
+      if((delete->left) && (delete->right)){
+        bst_replace_by_rightmost(delete, &delete->left);
+        break;
+      }
+
+    }
+    pDelete = delete;
+    if (delete->key < key) {
+      delete = delete->right;
+    } 
+    else {
+      delete = delete->left;
+    }
+  }
 }
+/*
+void bst_delete(bst_node_t **tree, char key) {
+    bst_node_t *current_node = *tree;
+    bst_node_t *parent_node = NULL;
+    while (current_node != NULL){
+        if (current_node->key == key){
+            if (current_node->left == NULL && current_node->right == NULL){
+                if (parent_node == NULL){
+                    *tree = NULL;
+                } else if (parent_node->left == current_node){
+                    parent_node->left = NULL;
+                } else {
+                    parent_node->right = NULL;
+                }
+                free(current_node);
+                return;
+            } else if (current_node->left == NULL) {
+                if (parent_node == NULL){
+                    *tree = current_node->right;
+                } else if (parent_node->left == current_node) {
+                    parent_node->left = current_node->right;
+                } else {
+                    parent_node->right = current_node->right;
+                }
+                free(current_node);
+                return;
+            } else if (current_node->right == NULL){
+                if (parent_node == NULL) {
+                    *tree = current_node->left;
+                } else if (parent_node->left == current_node) {
+                    parent_node->left = current_node->left;
+                } else {
+                    parent_node->right = current_node->left;
+                }
+                free(current_node);
+                return;
+            } else {
+                bst_replace_by_rightmost(current_node, &current_node->left);
+                return;
+            }
+        }
+        parent_node = current_node;
+        if (current_node->key > key) {
+            current_node = current_node->left;
+        } else {
+            current_node = current_node->right;
+        }
+    }
+}
+
+*/
+
 
 /*
  * Zrušenie celého stromu.
