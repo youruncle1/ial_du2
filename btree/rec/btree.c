@@ -135,13 +135,35 @@ void bst_delete(bst_node_t **tree, char key) {
   if (*tree == NULL){
     return;
   }
-
-  if((*tree)->key == key){
-    
+  if ((*tree)->key > key){
+    bst_delete(&(*tree)->left, key);
   }
   else{
-    free(*tree);
-    (*tree) = NULL;
+    if((*tree)->key < key){
+      bst_delete(&(*tree)->right, key);
+    }
+    else{
+      bst_node_t *PomUk = *tree;
+      if((!(*tree)->left) && !((*tree)->right)){
+        *tree = NULL;
+        free(PomUk);
+      }
+      else{
+        if(!((*tree)->right)){
+          *tree = (*tree)->left;
+          free(PomUk);
+        }
+        else{
+          if(!((*tree)->left)){
+            *tree = (*tree)->right;
+            free(PomUk);
+          }
+          else{
+            bst_replace_by_rightmost(*tree, &(*tree)->left);
+          }
+        }
+      }
+    }
   }
 
 }
