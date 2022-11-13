@@ -233,58 +233,6 @@ void bst_delete(bst_node_t **tree, char key) {
     }
   }
 }
-/*
-void bst_delete(bst_node_t **tree, char key) {
-    bst_node_t *current_node = *tree;
-    bst_node_t *parent_node = NULL;
-    while (current_node != NULL){
-        if (current_node->key == key){
-            if (current_node->left == NULL && current_node->right == NULL){
-                if (parent_node == NULL){
-                    *tree = NULL;
-                } else if (parent_node->left == current_node){
-                    parent_node->left = NULL;
-                } else {
-                    parent_node->right = NULL;
-                }
-                free(current_node);
-                return;
-            } else if (current_node->left == NULL) {
-                if (parent_node == NULL){
-                    *tree = current_node->right;
-                } else if (parent_node->left == current_node) {
-                    parent_node->left = current_node->right;
-                } else {
-                    parent_node->right = current_node->right;
-                }
-                free(current_node);
-                return;
-            } else if (current_node->right == NULL){
-                if (parent_node == NULL) {
-                    *tree = current_node->left;
-                } else if (parent_node->left == current_node) {
-                    parent_node->left = current_node->left;
-                } else {
-                    parent_node->right = current_node->left;
-                }
-                free(current_node);
-                return;
-            } else {
-                bst_replace_by_rightmost(current_node, &current_node->left);
-                return;
-            }
-        }
-        parent_node = current_node;
-        if (current_node->key > key) {
-            current_node = current_node->left;
-        } else {
-            current_node = current_node->right;
-        }
-    }
-}
-
-*/
-
 
 /*
  * Zrušenie celého stromu.
